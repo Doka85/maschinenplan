@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ machine.name }} – Maschinenansicht</title>
+</head>
+<body>
+    <h1>{{ machine.name }}</h1>
+    <ul>
+    {% for task in tasks %}
+        <li>
+            {{ task.kw }} – {{ task.part_number }} ({{ task.duration_hours }}h)
+            <form action="/api/tasks/{{ task.id }}/done" method="post" style="display:inline;">
+                <button type="submit">✅ Erledigt</button>
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

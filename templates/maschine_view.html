@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maschinenansicht</title>
+</head>
+<body>
+<h1>Maschine: {{ machine.name }}</h1>
+<p>Aktuelle Kalenderwoche: {{ current_week }}</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Beschreibung</th>
+            <th>Dauer (Stunden)</th>
+            <th>Status</th>
+            <th>Aktionen</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.description }}</td>
+            <td>{{ task.duration_hours }}</td>
+            <td>{{ task.status }}</td>
+            <td>
+                {% if task.status != 'Fertig' %}
+                    <form method="POST" action="{{ url_for('update_task_status', task_id=task.id) }}">
+                        <button type="submit">Fertig</button>
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>
