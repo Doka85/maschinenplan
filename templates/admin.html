@@ -4,55 +4,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maschinenplan – Admin</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <h1>Maschinenplan Admin</h1>
     <p>Aktuelle Kalenderwoche: {{ current_week }}</p>
 
     <!-- Formular zum Hinzufügen von Aufgaben -->
-<form action="/admin" method="POST">
+<form method="POST">
+    <h2>Neue Aufgabe hinzufügen</h2>
     <label for="machine_id">Maschine:</label>
     <select name="machine_id" id="machine_id" required>
-        <option value="1">Dura</option>
-        <option value="2">QTC300</option>
-        <option value="3">QTS200</option>
-        <option value="4">NVX1+2</option>
-        <option value="5">Handarbeit</option>
-    </select><br>
-
+        {% for machine in machines %}
+            <option value="{{ machine.id }}">{{ machine.name }}</option>
+        {% endfor %}
+    </select><br><br>
+    
     <label for="part_number">Teilenummer:</label>
-    <input type="text" name="part_number" id="part_number" required><br>
+    <input type="text" name="part_number" id="part_number"><br><br>
 
     <label for="description">Beschreibung:</label>
-    <input type="text" name="description" id="description" required><br>
+    <input type="text" name="description" id="description"><br><br>
 
     <label for="duration_hours">Dauer (Stunden):</label>
-    <input type="number" name="duration_hours" id="duration_hours" step="0.5" required><br>
+    <input type="number" name="duration_hours" id="duration_hours" required><br><br>
 
     <label for="kw">Kalenderwoche:</label>
-    <input type="number" name="kw" id="kw" required><br>
+    <input type="number" name="kw" id="kw" required><br><br>
+
+    <label for="year">Jahr:</label>
+    <input type="number" name="year" id="year" value="{{ current_year }}" required><br><br>
 
     <label for="status">Status:</label>
-    <select name="status" id="status" required>
+    <select name="status" id="status">
         <option value="Offen">Offen</option>
-        <option value="In Bearbeitung">In Bearbeitung</option>
         <option value="Fertig">Fertig</option>
-    </select><br>
+    </select><br><br>
 
-    <button type="submit">Aufgabe hinzufügen</button>
+    <label for="prio">Priorität:</label>
+    <select name="prio" id="prio" required>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+    </select><br><br>
+
+    <input type="submit" value="Aufgabe hinzufügen">
 </form>
 
-  
+
     <h2>Belegte Aufgaben</h2>
     <ul>
         {% for task in tasks %}
             <li>
                 Maschine {{ task.machine_id }} – Teilenummer {{ task.part_number }}: {{ task.description }} 
                 ({{ task.duration_hours }} Stunden, KW {{ task.kw }}, Status: {{ task.status }})
-                <a href="/edit/{{ task.id }}">Bearbeiten</a>
+                <a href="/edit_task/{{ task.id }}">Bearbeiten</a>
                 <a href="/delete/{{ task.id }}" onclick="return confirm('Bist du sicher, dass du diese Aufgabe löschen möchtest?')">Löschen</a>
             </li>
         {% endfor %}
     </ul>
+
+    <!-- Tabelle für die Belegung der Maschinen und die Summierung der Stunden -->
+<!-- Tabelle für die Belegung der Maschinen und die Summierung der Stunden -->
+<h2>Stundenübersicht</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Maschine</th>
+            {% for year, week in weeks_years %}
+                <th>KW {{ week }} ({{ year }})</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for machine in machines %}
+            <tr>
+                <td>{{ machine.name }}</td>
+                {% for year, week in weeks_years %}
+                    <td>{{ hours_per_machine_kw.get((machine.id, year, week), 0) }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<h2>Maschine hinzufügen</h2>
+<form method="POST" action="/admin">
+    <label for="machine_name">Maschinenname:</label>
+    <input type="text" id="machine_name" name="machine_name" required><br><br>
+    <button type="submit">Maschine hinzufügen</button>
+</form>
+
+    <script>
+        function updateSum() {
+            let total = 0;
+            // Schleife über alle Stundenfelder und summiere die Werte
+            document.querySelectorAll('.hours').forEach(function(input) {
+                total += parseFloat(input.value) || 0;
+            });
+            // Zeige die Gesamtsumme an
+            document.getElementById('total-hours').innerText = 'Gesamtstunden: ' + total.toFixed(2);
+        }
+    </script>
 </body>
 </html>

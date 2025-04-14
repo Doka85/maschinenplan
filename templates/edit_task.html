@@ -8,36 +8,43 @@
 <body>
     <h1>Aufgabe bearbeiten</h1>
 
-    <form action="/edit/{{ task.id }}" method="POST">
-        <label for="machine_id">Maschine:</label>
-        <select name="machine_id" id="machine_id" required>
-            <option value="1" {% if task.machine_id == 1 %}selected{% endif %}>Dura</option>
-            <option value="2" {% if task.machine_id == 2 %}selected{% endif %}>QTC300</option>
-            <option value="3" {% if task.machine_id == 3 %}selected{% endif %}>QTS200</option>
-            <option value="4" {% if task.machine_id == 4 %}selected{% endif %}>NVX1+2</option>
-            <option value="5" {% if task.machine_id == 5 %}selected{% endif %}>Handarbeit</option>
-        </select><br>
+<form action="{{ url_for('edit_task', task_id=task.id) }}" method="POST">
+    <label for="machine_id">Maschine:</label>
+    <select name="machine_id">
+        {% for machine in machines %}
+        <option value="{{ machine.id }}" {% if machine.id == task.machine_id %}selected{% endif %}>{{ machine.name }}</option>
+        {% endfor %}
+    </select><br>
 
-        <label for="part_number">Teilenummer:</label>
-        <input type="text" name="part_number" id="part_number" value="{{ task.part_number }}" required><br>
+    <label for="part_number">Teilenummer:</label>
+    <input type="text" name="part_number" value="{{ task.part_number }}"><br>
 
-        <label for="description">Beschreibung:</label>
-        <input type="text" name="description" id="description" value="{{ task.description }}" required><br>
+    <label for="description">Beschreibung:</label>
+    <input type="text" name="description" value="{{ task.description }}"><br>
 
-        <label for="duration_hours">Dauer (Stunden):</label>
-        <input type="number" name="duration_hours" id="duration_hours" step="0.5" value="{{ task.duration_hours }}" required><br>
+    <label for="duration_hours">Dauer (Stunden):</label>
+    <input type="number" name="duration_hours" value="{{ task.duration_hours }}"><br>
 
-        <label for="kw">Kalenderwoche:</label>
-        <input type="number" name="kw" id="kw" value="{{ task.kw }}" required><br>
+    <label for="kw">Kalenderwoche:</label>
+    <input type="number" name="kw" value="{{ task.kw }}"><br>
 
-        <label for="status">Status:</label>
-        <select name="status" id="status" required>
-            <option value="Offen" {% if task.status == 'Offen' %}selected{% endif %}>Offen</option>
-            <option value="In Bearbeitung" {% if task.status == 'In Bearbeitung' %}selected{% endif %}>In Bearbeitung</option>
-            <option value="Fertig" {% if task.status == 'Fertig' %}selected{% endif %}>Fertig</option>
-        </select><br>
+    <label for="year">Jahr:</label>
+    <input type="number" name="year" value="{{ task.year }}"><br>
 
-        <button type="submit">Aufgabe bearbeiten</button>
-    </form>
+    <label for="prio">Priorität:</label>
+    <select name="prio">
+        <option value="1" {% if task.prio == 1 %}selected{% endif %}>1</option>
+        <option value="2" {% if task.prio == 2 %}selected{% endif %}>2</option>
+        <option value="3" {% if task.prio == 3 %}selected{% endif %}>3</option>
+    </select><br>
+
+    <label for="status">Status:</label>
+    <select name="status">
+        <option value="Offen" {% if task.status == 'Offen' %}selected{% endif %}>Offen</option>
+        <option value="Fertig" {% if task.status == 'Fertig' %}selected{% endif %}>Fertig</option>
+    </select><br>
+
+    <input type="submit" value="Aufgabe aktualisieren">
+</form>
 </body>
 </html>

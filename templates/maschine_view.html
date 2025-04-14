@@ -10,33 +10,42 @@
 <p>Aktuelle Kalenderwoche: {{ current_week }}</p>
 
 <table>
-    <thead>
-        <tr>
-            <th>Beschreibung</th>
-            <th>Dauer (Stunden)</th>
-			<th>Kalenderwoche</th>
-            <th>Status</th>
-            <th>Aktionen</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for task in tasks %}
-        <tr>
-            <td>{{ task.description }}</td>
-            <td>{{ task.duration_hours }}</td>
-			<td>{{ task.kw }}</td>
-            <td>{{ task.status }}</td>
-            <td>
-                {% if task.status != 'Fertig' %}
-                    <form method="POST" action="{{ url_for('update_task_status', task_id=task.id) }}">
-                        <button type="submit">Fertig</button>
-                    </form>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
+  <thead>
+    <tr>
+      <th>Beschreibung</th>
+      <th>Teilenummer</th>
+      <th>Kalenderwoche</th>
+      <th>Jahr</th>
+      <th>Priorität</th>
+      <th>Dauer (Stunden)</th>
+      <th>Status</th>
+      <th>Aktionen</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in tasks %}
+      <tr>
+        <td>{{ task.description }}</td>
+        <td>{{ task.part_number }}</td>
+        <td>KW {{ task.kw }}</td>
+        <td>{{ task.year }}</td>
+        <td>{{ task.prio }}</td>
+        <td>{{ task.duration_hours }}</td>
+        <td>{{ task.status }}</td>
+        <td>
+          {% if task.status != 'Fertig' %}
+            <form method="POST" action="{{ url_for('maschine_view', machine_id=machine.id) }}">
+              <input type="hidden" name="task_id" value="{{ task.id }}">
+              <button type="submit">Fertig</button>
+            </form>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
 </table>
+
+
 
 </body>
 </html>
