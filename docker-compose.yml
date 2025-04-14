@@ -1,11 +1,12 @@
 version: '3.9'
 services:
-  flask:
-    container_name: flask
+  app:
     build: .
     ports:
       - "4711:5000"
     volumes:
-      - /volume1/docker/maschinenplan:/app
-    restart: unless-stopped
+      - .:/app
+    environment:
+      - FLASK_APP=app.py
+
 

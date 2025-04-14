@@ -14,6 +14,7 @@
         <tr>
             <th>Beschreibung</th>
             <th>Dauer (Stunden)</th>
+			<th>Kalenderwoche</th>
             <th>Status</th>
             <th>Aktionen</th>
         </tr>
@@ -23,6 +24,7 @@
         <tr>
             <td>{{ task.description }}</td>
             <td>{{ task.duration_hours }}</td>
+			<td>{{ task.kw }}</td>
             <td>{{ task.status }}</td>
             <td>
                 {% if task.status != 'Fertig' %}
