@@ -93,10 +93,3 @@ Wenn du zur Entwicklung des Projekts beitragen möchtest, folge diesen Schritten
 
 Dieses Projekt ist unter der MIT-Lizenz lizenziert.
 
-## Kontakt
-
-Für Fragen oder Anregungen, kannst du dich gerne an mich wenden:
-
-- **Name**: Doka85
-- **E-Mail**: manuel@uklaupp.de
-- **GitHub**: [Doka85 GitHub](https://github.com/Doka85)
