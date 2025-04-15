@@ -4,6 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maschinenansicht</title>
+	
+	 <style>
+        /* Dein internes CSS für Maschinenview */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 1.2em;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        td {
+            font-size: 1.1em;
+        }
+
+        button {
+            padding: 6px 12px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ddd;
+        }
+    </style>
+	
 </head>
 <body>
 <h1>Maschine: {{ machine.name }}</h1>
@@ -14,10 +59,10 @@
     <tr>
       <th>Beschreibung</th>
       <th>Teilenummer</th>
-      <th>Kalenderwoche</th>
+      <th>KW</th>
       <th>Jahr</th>
-      <th>Priorität</th>
-      <th>Dauer (Stunden)</th>
+      <th>Prio</th>
+      <th>Dauer (Std)</th>
       <th>Status</th>
       <th>Aktionen</th>
     </tr>
@@ -45,6 +90,12 @@
   </tbody>
 </table>
 
+
+<script>
+  setTimeout(function(){
+    location.reload();
+  }, 300000);  // 300000 ms = 5 Minuten
+</script>
 
 
 </body>

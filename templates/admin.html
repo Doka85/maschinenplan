@@ -5,16 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maschinenplan – Admin</title>
     <style>
+        /* Dein internes CSS für Admin-Bereich */
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
-        table, th, td {
-            border: 1px solid black;
-        }
+
         th, td {
-            padding: 8px;
-            text-align: center;
+            padding: 10px 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #e6f7ff;
+            font-weight: bold;
+        }
+
+        td {
+            font-size: 1em;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
@@ -64,19 +86,19 @@
 </form>
 
 
-    <h2>Belegte Aufgaben</h2>
-    <ul>
-        {% for task in tasks %}
-            <li>
-                Maschine {{ task.machine_id }} – Teilenummer {{ task.part_number }}: {{ task.description }} 
-                ({{ task.duration_hours }} Stunden, KW {{ task.kw }}, Status: {{ task.status }})
-                <a href="/edit_task/{{ task.id }}">Bearbeiten</a>
-                <a href="/delete/{{ task.id }}" onclick="return confirm('Bist du sicher, dass du diese Aufgabe löschen möchtest?')">Löschen</a>
-            </li>
-        {% endfor %}
-    </ul>
+<h2>Belegte Aufgaben</h2>
+<ul>
+    {% for task, machine in tasks %}
+        <li>
+            {{ machine.name }} – Teilenummer {{ task.part_number }}: {{ task.description }} 
+            ({{ task.duration_hours }} Stunden, KW {{ task.kw }}, Status: {{ task.status }})
+            <a href="/edit_task/{{ task.id }}">Bearbeiten</a>
+            <a href="/delete/{{ task.id }}" onclick="return confirm('Bist du sicher, dass du diese Aufgabe löschen möchtest?')">Löschen</a>
+        </li>
+    {% endfor %}
+</ul>
 
-    <!-- Tabelle für die Belegung der Maschinen und die Summierung der Stunden -->
+
 <!-- Tabelle für die Belegung der Maschinen und die Summierung der Stunden -->
 <h2>Stundenübersicht</h2>
 <table>

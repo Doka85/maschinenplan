@@ -84,7 +84,14 @@ from sqlalchemy import func
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_view():
     if request.method == 'POST':
-        # Formularfelder abfragen
+        # Wenn wir eine neue Maschine hinzufügen
+        if 'machine_name' in request.form:
+            machine_name = request.form.get('machine_name')
+            new_machine = Machine(name=machine_name)
+            db.session.add(new_machine)
+            db.session.commit()
+
+        # Formularfelder für Aufgaben abfragen
         machine_id = request.form.get('machine_id', type=int)
         part_number = request.form.get('part_number')
         description = request.form.get('description')
@@ -112,8 +119,8 @@ def admin_view():
 
     current_week = get_current_week()
 
-    # Alle Aufgaben anzeigen
-    tasks = Task.query.all()
+    # Alle Aufgaben anzeigen, sortiert nach Maschine, Jahr, KW und Priorität
+    tasks = db.session.query(Task, Machine).join(Machine).order_by(Machine.name, Task.year, Task.kw, Task.prio).all()
 
     # Maschinen laden
     machines = Machine.query.all()
@@ -137,6 +144,7 @@ def admin_view():
             hours_per_machine_kw[(machine.id, year, week)] = total_duration
 
     return render_template('admin.html', tasks=tasks, current_week=current_week, current_year=current_year, machines=machines, hours_per_machine_kw=hours_per_machine_kw, weeks_years=weeks_years)
+
 
    
 @app.route('/maschine/<int:machine_id>', methods=['GET', 'POST'])
