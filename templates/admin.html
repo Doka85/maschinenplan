@@ -49,6 +49,7 @@
     <h2>Neue Aufgabe hinzufügen</h2>
     <label for="machine_id">Maschine:</label>
     <select name="machine_id" id="machine_id" required>
+        <option value="" disabled selected>Bitte Maschine auswählen</option>
         {% for machine in machines %}
             <option value="{{ machine.id }}">{{ machine.name }}</option>
         {% endfor %}
@@ -86,17 +87,32 @@
 </form>
 
 
-<h2>Belegte Aufgaben</h2>
+<h2>Offene Aufgaben</h2>
 <ul>
-    {% for task, machine in tasks %}
+    {% for task in open_tasks %}
         <li>
-            {{ machine.name }} – Teilenummer {{ task.part_number }}: {{ task.description }} 
-            ({{ task.duration_hours }} Stunden, KW {{ task.kw }}, Status: {{ task.status }})
-            <a href="/edit_task/{{ task.id }}">Bearbeiten</a>
-            <a href="/delete/{{ task.id }}" onclick="return confirm('Bist du sicher, dass du diese Aufgabe löschen möchtest?')">Löschen</a>
+            {{ task[1].name }} – Teilenummer {{ task[0].part_number }}: {{ task[0].description }}
+            ({{ task[0].duration_hours }} Stunden, KW {{ task[0].kw }}, Status: {{ task[0].status }})
+            <a href="/edit_task/{{ task[0].id }}">Bearbeiten</a>
+            <a href="/delete/{{ task[0].id }}" onclick="return confirm('Bist du sicher, dass du diese Aufgabe löschen möchtest?')">Löschen</a>
         </li>
     {% endfor %}
 </ul>
+
+
+<h2>Fertige Aufgaben</h2>
+<ul>
+    {% for task in finished_tasks %}
+        <li>
+            {{ task[1].name }} – Teilenummer {{ task[0].part_number }}: {{ task[0].description }}
+            ({{ task[0].duration_hours }} Stunden, KW {{ task[0].kw }}, Status: {{ task[0].status }})
+            <a href="/edit_task/{{ task[0].id }}">Bearbeiten</a>
+            <a href="/delete/{{ task[0].id }}" onclick="return confirm('Bist du sicher, dass du diese Aufgabe löschen möchtest?')">Löschen</a>
+        </li>
+    {% endfor %}
+</ul>
+
+
 
 
 <!-- Tabelle für die Belegung der Maschinen und die Summierung der Stunden -->

@@ -119,8 +119,13 @@ def admin_view():
 
     current_week = get_current_week()
 
-    # Alle Aufgaben anzeigen, sortiert nach Maschine, Jahr, KW und Priorität
-    tasks = db.session.query(Task, Machine).join(Machine).order_by(Machine.name, Task.year, Task.kw, Task.prio).all()
+    # Alle offenen Aufgaben (Status != 'Fertig') mit Maschineninformationen
+    open_tasks = db.session.query(Task, Machine).join(Machine).filter(Task.status != 'Fertig').order_by(Machine.name, Task.year, Task.kw, Task.prio).all()
+
+    # Alle fertigen Aufgaben (Status == 'Fertig') mit Maschineninformationen
+    finished_tasks = db.session.query(Task, Machine).join(Machine).filter(Task.status == 'Fertig').order_by(Machine.name, Task.year, Task.kw, Task.prio).all()
+
+
 
     # Maschinen laden
     machines = Machine.query.all()
@@ -143,7 +148,7 @@ def admin_view():
             ).scalar() or 0  # Falls keine Aufgabe für diese Woche existiert, setze 0 Stunden
             hours_per_machine_kw[(machine.id, year, week)] = total_duration
 
-    return render_template('admin.html', tasks=tasks, current_week=current_week, current_year=current_year, machines=machines, hours_per_machine_kw=hours_per_machine_kw, weeks_years=weeks_years)
+    return render_template('admin.html', open_tasks=open_tasks, finished_tasks=finished_tasks, current_week=current_week, current_year=current_year, machines=machines, hours_per_machine_kw=hours_per_machine_kw, weeks_years=weeks_years)
 
 
    

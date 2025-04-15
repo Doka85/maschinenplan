@@ -51,6 +51,15 @@
 	
 </head>
 <body>
+
+<!-- Menü oben auf der Maschinenansicht -->
+<div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+    <a href="{{ url_for('maschine_view', machine_id=1) }}">Dura</a>
+    <a href="{{ url_for('maschine_view', machine_id=2) }}">QTC300</a>
+    <a href="{{ url_for('maschine_view', machine_id=3) }}">QTS200</a>
+    <a href="{{ url_for('maschine_view', machine_id=4) }}">NVX 1+2</a>
+</div>
+
 <h1>Maschine: {{ machine.name }}</h1>
 <p>Aktuelle Kalenderwoche: {{ current_week }}</p>
 
